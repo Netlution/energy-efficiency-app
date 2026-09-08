@@ -13,31 +13,62 @@ st.write(
 )
 
 
-@st.cache_data
+# @st.cache_data
+# @st.cache_data
+# def load_data():
+#     df = pd.read_excel(
+#         r"C:\Users\user\Downloads\energy efficiency\Energy\ENB2012_data.xlsx"
+#     )
+
+#     df.rename(columns={
+#         'X1': 'Relative_Compactness',
+#         'X2': 'Surface_Area',
+#         'X3': 'Wall_Area',
+#         'X4': 'Roof_Area',
+#         'X5': 'Overall_Height',
+#         'X6': 'Orientation',
+#         'X7': 'Glazing_Area',
+#         'X8': 'Glazing_Area_Distribution',
+#         'Y1': 'Heating_Load',
+#         'Y2': 'Cooling_Load'
+#     }, inplace=True)
+
+#     df.index = range(1, len(df) + 1)
+
+#     return df
+
+# df = load_data()
+
+from pathlib import Path
+import pandas as pd
+import streamlit as st
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_PATH = BASE_DIR / "Energy" / "ENB2012_data.xlsx"
+
+
 @st.cache_data
 def load_data():
-    df = pd.read_excel(
-        r"C:\Users\user\Downloads\energy efficiency\Energy\ENB2012_data.xlsx"
-    )
+    df = pd.read_excel(DATA_PATH)
 
-    df.rename(columns={
-        'X1': 'Relative_Compactness',
-        'X2': 'Surface_Area',
-        'X3': 'Wall_Area',
-        'X4': 'Roof_Area',
-        'X5': 'Overall_Height',
-        'X6': 'Orientation',
-        'X7': 'Glazing_Area',
-        'X8': 'Glazing_Area_Distribution',
-        'Y1': 'Heating_Load',
-        'Y2': 'Cooling_Load'
-    }, inplace=True)
-
-    df.index = range(1, len(df) + 1)
+    df.columns = [
+        "Relative_Compactness",
+        "Surface_Area",
+        "Wall_Area",
+        "Roof_Area",
+        "Overall_Height",
+        "Orientation",
+        "Glazing_Area",
+        "Glazing_Area_Distribution",
+        "Heating_Load",
+        "Cooling_Load"
+    ]
 
     return df
 
+
 df = load_data()
+
 
 with st.expander("Show raw data table"):
     st.dataframe(df, use_container_width=True)
